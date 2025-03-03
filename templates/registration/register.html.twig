@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+<div class="min-h-screen flex items-center justify-center bg-gray-200 dark:bg-gray-800 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+                Create your account
+            </h2>
+        </div>
+        <form class="mt-8 space-y-6" method="post">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('register') }}">
+            
+            {% for flash_error in app.flashes('error') %}
+                <div class="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-200 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline">
+                        {% if flash_error == 'Email already exists' %}
+                            This email is already registered. Please use a different email or login to your account.
+                        {% else %}
+                            {{ flash_error }}
+                        {% endif %}
+                    </span>
+                </div>
+            {% endfor %}
+            
+            {% for flash_success in app.flashes('success') %}
+                <div class="bg-green-100 dark:bg-green-900 border border-[#23c686] text-[#23c686] dark:text-[#57f7b7] px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline">{{ flash_success }}</span>
+                </div>
+            {% endfor %}
+
+            <div class="rounded-md shadow-sm -space-y-px">
+                <div>
+                    <label for="firstname" class="sr-only">First Name</label>
+                    <input id="firstname" name="firstname" type="text" required 
+                           class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-t-md focus:outline-none focus:ring-[#23c686] focus:border-[#23c686] focus:z-10 sm:text-sm" 
+                           placeholder="First Name">
+                </div>
+                <div>
+                    <label for="lastname" class="sr-only">Last Name</label>
+                    <input id="lastname" name="lastname" type="text" required 
+                           class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 focus:outline-none focus:ring-[#23c686] focus:border-[#23c686] focus:z-10 sm:text-sm" 
+                           placeholder="Last Name">
+                </div>
+                <div>
+                    <label for="email" class="sr-only">Email</label>
+                    <input id="email" name="email" type="email" required 
+                           class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 focus:outline-none focus:ring-[#23c686] focus:border-[#23c686] focus:z-10 sm:text-sm" 
+                           placeholder="Email address">
+                </div>
+                <div>
+                    <label for="password" class="sr-only">Password</label>
+                    <input id="password" name="password" type="password" required 
+                           class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-b-md focus:outline-none focus:ring-[#23c686] focus:border-[#23c686] focus:z-10 sm:text-sm" 
+                           placeholder="Password">
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#23c686] hover:bg-[#1ea16d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#23c686] dark:focus:ring-offset-gray-900">
+                    Sign up
+                </button>
+            </div>
+            
+            <div class="text-sm text-center">
+                <a href="{{ path('app_login') }}" class="font-medium text-[#23c686] hover:text-[#1ea16d] dark:text-[#57f7b7] dark:hover:text-[#23c686]">
+                    Already have an account? Sign in
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %} 

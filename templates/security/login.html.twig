@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in{% endblock %}
+
+{% block body %}
+<div class="min-h-screen flex items-center justify-center bg-gray-200 dark:bg-gray-800 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+                Sign in to your account
+            </h2>
+        </div>
+        <form class="mt-8 space-y-6" method="post">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            {% for flash_success in app.flashes('success') %}
+                <div class="bg-green-100 dark:bg-green-900 border border-[#23c686] text-[#23c686] dark:text-[#57f7b7] px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline">{{ flash_success }}</span>
+                </div>
+            {% endfor %}
+
+            <div class="rounded-md shadow-sm -space-y-px">
+                <div>
+                    <label for="inputEmail" class="sr-only">Email</label>
+                    <input id="inputEmail" name="email" type="email" required value="{{ last_username }}" 
+                           class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-t-md focus:outline-none focus:ring-[#23c686] focus:border-[#23c686] focus:z-10 sm:text-sm" 
+                           placeholder="Email address">
+                </div>
+                <div>
+                    <label for="inputPassword" class="sr-only">Password</label>
+                    <input id="inputPassword" name="password" type="password" required 
+                           class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-b-md focus:outline-none focus:ring-[#23c686] focus:border-[#23c686] focus:z-10 sm:text-sm" 
+                           placeholder="Password">
+                </div>
+            </div>
+
+            {% if error %}
+                <div class="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-200 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline">
+                        {% if error.message == 'Bad credentials.' %}
+                            Invalid email or password.
+                        {% elseif error.message starts with 'User' %}
+                            No account found with this email address.
+                        {% else %}
+                            {{ error.message }}
+                        {% endif %}
+                    </span>
+                </div>
+            {% endif %}
+
+            <div>
+                <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#23c686] hover:bg-[#1ea16d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#23c686] dark:focus:ring-offset-gray-900">
+                    Sign in
+                </button>
+            </div>
+            
+            <div class="text-sm text-center">
+                <a href="{{ path('app_register') }}" class="font-medium text-[#23c686] hover:text-[#1ea16d] dark:text-[#57f7b7] dark:hover:text-[#23c686]">
+                    Don't have an account? Sign up
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %} 

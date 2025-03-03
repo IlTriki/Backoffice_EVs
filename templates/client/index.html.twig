@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Clients
+{% endblock %}
+
+{% block body %}
+	<div class="container mx-auto px-4 py-8">
+		<div class="flex justify-between items-center mb-6">
+			<h1 class="text-3xl font-bold">Clients</h1>
+			<a href="{{ path('client_new') }}" class="bg-[#23c686] hover:bg-[#5cf1b5] text-white font-bold py-2 px-4 rounded">
+				New Client
+			</a>
+		</div>
+
+		{% for message in app.flashes('success') %}
+			<div class="bg-green-100 border border-[#23c686] text-[#23c686] px-4 py-3 rounded mb-4">
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		<div class="overflow-x-auto">
+        	<table class="min-w-full bg-white dark:bg-gray-800">
+				<thead>
+					<tr class="bg-gray-100 dark:bg-gray-700">
+						<th class="px-6 py-3 text-gray-900 dark:text-gray-100 text-left">Name</th>
+						<th class="px-6 py-3 text-gray-900 dark:text-gray-100 text-left">Email</th>
+						<th class="px-6 py-3 text-gray-900 dark:text-gray-100 text-left">Phone</th>
+						<th class="px-6 py-3 text-gray-900 dark:text-gray-100 text-left">Address</th>
+						<th class="px-6 py-3 text-gray-900 dark:text-gray-100 text-left">Created At</th>
+						{% if is_granted('edit', clients[0]) %}
+							<th class="px-6 py-3 text-left">Actions</th>
+						{% endif %}
+					</tr>
+				</thead>
+				<tbody>
+					{% for client in clients %}
+						<tr class="border-b">
+							<td class="px-6 py-4 text-gray-900 dark:text-gray-100">{{ client.firstname }}
+								{{ client.lastname }}</td>
+							<td class="px-6 py-4 text-gray-900 dark:text-gray-100">{{ client.email }}</td>
+							<td class="px-6 py-4 text-gray-900 dark:text-gray-100">{{ client.phoneNumber }}</td>
+							<td class="px-6 py-4 text-gray-900 dark:text-gray-100">{{ client.address }}</td>
+							<td class="px-6 py-4 text-gray-900 dark:text-gray-100">{{ client.createdAt|date('Y-m-d H:i:s') }}</td>
+							{% if is_granted('edit', client) %}
+								<td class="px-6 py-4 text-gray-900 dark:text-gray-100">
+									<a href="{{ path('client_edit', {id: client.id}) }}" class="text-[#23c686] hover:text-[#5cf1b5] dark:text-[#23c686] dark:hover:text-[#5cf1b5]">Edit</a>
+								</td>
+							{% endif %}
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}
