@@ -78,7 +78,7 @@ class AdminController extends AbstractController
     public function editUser(User $user, Request $request, EntityManagerInterface $entityManager): Response
     {
         // Check if trying to edit another admin
-        if (in_array('ROLE_ADMIN', $user->getRoles()) && $this->getUser() !== $user) {
+        if (in_array('ROLE_ADMIN', $user->getRoles())) {
             throw new AccessDeniedException('You cannot edit other admin accounts.');
         }
 
