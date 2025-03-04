@@ -7,10 +7,18 @@ use App\Enum\Brand;
 use App\Enum\VehicleType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProductFixtures extends Fixture
 {
-    public function load(ObjectManager $manager)
+    private $slugger;
+    
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
+    
+    public function load(ObjectManager $manager): void
     {
         $products = [
             ['name' => 'Ioniq 5', 'brand' => 'Hyundai', 'model' => 'Ioniq 5', 'type' => 'Electric', 'year' => 2024, 'description' => 'The Hyundai Ioniq 5 is a futuristic electric SUV with a spacious interior, fast charging capabilities, and an impressive range of up to 315 miles. It features advanced driver assistance systems and a unique retro-modern design.', 'price' => 49800],
@@ -30,12 +38,15 @@ class ProductFixtures extends Fixture
             $product->setYear($productData['year']);
             $product->setDescription($productData['description']);
             $product->setPrice($productData['price']);
+            
+            // Generate image filename based on product name
+            $safeFilename = $this->slugger->slug(strtolower($productData['name']));
+            $imageFilename = $safeFilename . '.png';
+            $product->setImageFilename($imageFilename);
 
             $manager->persist($product);
         }
 
         $manager->flush();
     }
-
-
 }

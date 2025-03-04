@@ -38,7 +38,7 @@ class AdminController extends AbstractController
             
             if ($existingUser) {
                 $this->addFlash('error', 'A user with this email already exists.');
-                return $this->render('admin/new_user.html.twig', [
+                return $this->render('admin/user_form.html.twig', [
                     'form' => $form->createView(),
                     'title' => 'New User'
                 ]);
@@ -61,14 +61,14 @@ class AdminController extends AbstractController
                 return $this->redirectToRoute('admin_users');
             } catch (\Exception $e) {
                 $this->addFlash('error', 'An error occurred while creating the user. ' . $e->getMessage());
-                return $this->render('admin/new_user.html.twig', [
+                return $this->render('admin/user_form.html.twig', [
                     'form' => $form->createView(),
                     'title' => 'New User'
                 ]);
             }
         }
 
-        return $this->render('admin/new_user.html.twig', [
+        return $this->render('admin/user_form.html.twig', [
             'form' => $form->createView(),
             'title' => 'New User'
         ]);

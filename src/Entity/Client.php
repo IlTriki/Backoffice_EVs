@@ -40,6 +40,10 @@ class Client
     private ?string $email = null;
 
     #[ORM\Column(length: 20, nullable: true)]
+    #[Assert\Regex(
+        pattern: '/^\+?[0-9]+$/',
+        message: 'Phone number can only contain numbers and an optional + sign at the beginning'
+    )]
     private ?string $phoneNumber = null;
 
     #[ORM\Column(length: 255, nullable: true)]

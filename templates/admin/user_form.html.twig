@@ -1,0 +1,160 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6 text-gray-900 dark:text-white">{{ title }}</h1>
+    
+    {% for message in app.flashes('error') %}
+        <div class="bg-red-100 dark:bg-red-900 border border-red-400 text-red-700 dark:text-red-300 px-4 py-3 rounded mb-4">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="form-group">
+                    {{ form_label(form.firstname, 'First Name', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'}}) }}
+                    {{ form_widget(form.firstname, {'attr': {
+                        'class': 'w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-[#23c686] focus:border-transparent transition duration-200 ease-in-out shadow-sm',
+                        'placeholder': 'Enter first name'
+                    }}) }}
+                    {{ form_errors(form.firstname, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.lastname, 'Last Name', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'}}) }}
+                    {{ form_widget(form.lastname, {'attr': {
+                        'class': 'w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-[#23c686] focus:border-transparent transition duration-200 ease-in-out shadow-sm',
+                        'placeholder': 'Enter last name'
+                    }}) }}
+                    {{ form_errors(form.lastname, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
+                </div>
+            </div>
+
+            <div class="mt-6">
+                {{ form_label(form.email, 'Email Address', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'}}) }}
+                {{ form_widget(form.email, {'attr': {
+                    'class': 'w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-[#23c686] focus:border-transparent transition duration-200 ease-in-out shadow-sm',
+                    'placeholder': 'user@example.com'
+                }}) }}
+                {{ form_errors(form.email, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
+            </div>
+
+            {% if form.roles is defined %}
+            <div class="mt-6">
+                {{ form_label(form.roles, 'User Roles', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                <div class="bg-gray-50 dark:bg-gray-700 p-5 rounded-lg border border-gray-200 dark:border-gray-600">
+                    <div class="space-y-3" id="roles-container">
+                        {% for child in form.roles %}
+                            <div class="flex items-center custom-checkbox-wrapper">
+                                <div class="relative flex items-start">
+                                    <div class="flex items-center h-6">
+                                        {{ form_widget(child, {
+                                            'attr': {
+                                                'class': 'custom-checkbox-input sr-only',
+                                                'id': 'role_' ~ loop.index
+                                            }
+                                        }) }}
+                                        <div class="custom-checkbox w-5 h-5 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded cursor-pointer flex items-center justify-center">
+                                            <svg class="custom-checkbox-icon w-3.5 h-3.5 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="ml-3 text-sm">
+                                        <label for="role_{{ loop.index }}" class="font-medium text-gray-700 dark:text-gray-300 cursor-pointer">
+                                            {{ child.vars.label }}
+                                        </label>
+                                        <p class="text-gray-500 dark:text-gray-400">
+                                            {% if child.vars.value == 'ROLE_USER' %}
+                                                Basic access to the application
+                                            {% elseif child.vars.value == 'ROLE_MANAGER' %}
+                                                Can manage clients and view products
+                                            {% elseif child.vars.value == 'ROLE_ADMIN' %}
+                                                Full administrative access
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {{ form_errors(form.roles, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="flex justify-end space-x-4 mt-6">
+            <a href="{{ path('admin_users') }}" class="px-6 py-2.5 rounded-lg bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-white font-medium transition duration-200 ease-in-out">
+                Cancel
+            </a>
+            <button type="submit" class="px-6 py-2.5 rounded-lg bg-[#23c686] hover:bg-[#1ea16d] text-white font-medium shadow-sm hover:shadow transition duration-200 ease-in-out">
+                Save User
+            </button>
+        </div>
+    {{ form_end(form) }}
+</div>
+
+<style>
+    .custom-checkbox-wrapper input:checked + .custom-checkbox {
+        background-color: #23c686;
+        border-color: #23c686;
+    }
+    
+    .custom-checkbox-wrapper input:checked + .custom-checkbox .custom-checkbox-icon {
+        display: block;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const checkboxWrappers = document.querySelectorAll('.custom-checkbox-wrapper');
+    
+    checkboxWrappers.forEach(wrapper => {
+        const input = wrapper.querySelector('.custom-checkbox-input');
+        const customCheckbox = wrapper.querySelector('.custom-checkbox');
+        const checkIcon = wrapper.querySelector('.custom-checkbox-icon');
+        
+        if (input.checked) {
+            customCheckbox.style.backgroundColor = '#23c686';
+            customCheckbox.style.borderColor = '#23c686';
+            checkIcon.style.display = 'block';
+        }
+        
+        customCheckbox.addEventListener('click', function() {
+            input.checked = !input.checked;
+            updateCheckboxStyle(input, customCheckbox, checkIcon);
+        });
+        
+        const label = wrapper.querySelector('label');
+        if (label) {
+            label.addEventListener('click', function(e) {
+                e.preventDefault();
+                input.checked = !input.checked;
+                updateCheckboxStyle(input, customCheckbox, checkIcon);
+            });
+        }
+        
+        input.addEventListener('change', function() {
+            updateCheckboxStyle(input, customCheckbox, checkIcon);
+        });
+    });
+    
+    function updateCheckboxStyle(input, customCheckbox, checkIcon) {
+        if (input.checked) {
+            customCheckbox.style.backgroundColor = '#23c686';
+            customCheckbox.style.borderColor = '#23c686';
+            checkIcon.style.display = 'block';
+        } else {
+            customCheckbox.style.backgroundColor = '';
+            customCheckbox.style.borderColor = '';
+            checkIcon.style.display = 'none';
+        }
+    }
+});
+</script>
+{% endblock %} 
