@@ -1,65 +1,78 @@
-# Symfony 7.1 Boilerplate 
+# Electric Vehicles Webshop Backoffice
 
-Attention : Il vous faut PHP 8.2 pour faire fonctionner ce projet si vous avez PHP 8.1 utiliser la branche symfony64 du repository.
+## Installation
 
-## Initialisation de votre IDE
+### 1. Cloner le repository
 
-### PHPStorm
+```bash
+git clone https://github.com/IlTriki/Backoffice_EVs.git
+cd Backoffice_EVs
+```
 
-1. Ouvrir le projet dans PHPStorm
-2. Installer les extensions Twig et Symfony
-    - Aller dans File > Settings > Plugins
-    - Installer les extensions (Twig, EA Inspection, PHP Annotations, .env files support)
+### 2. Installer les dépendances
 
-### Visual Studio Code
+```bash
+composer install
+```
 
-1. Ouvrir le projet dans Visual Studio Code
-2. Installer les extensions pour PHP, Twig et Symfony
-    - Aller dans l'onglet Extensions
-    - Installer les extensions (whatwedo.twig, TheNouillet.symfony-vscode, DEVSENSE.phptools-vscode, 
-    bmewburn.vscode-intelephense-client, zobo.php-intellisense)
+### 3. Créer la base de données et exécuter les migrations
 
-## Installation avec IDX
+```bash
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:migrate
+```
 
-1. Fork le projet sur votre compte GitHub
-2. Importer le projet depuis votre GitHub sur IDX
-3. Le projet est déjà lancé il suffit d'aller dans l'onglet du terminal avec `start` puis cliquer sur le lien `localhost`
-4. Lancer la commande `composer i` pour installer les dépendances du projet.
-5. Pour accéder à la base de données `mysql -u root`
-6. Dans un fichier à la racine `.env.local` mettre cette variable d'environnement 
-`DATABASE_URL="mysql://root:@127.0.0.1:3306/app?serverVersion=10.11.2-MariaDB&charset=utf8mb4"`
+### 4. Charger les fixtures
 
-## Installation en local
+```bash
+php bin/console doctrine:fixtures:load
+```
 
-1. Cloner le projet
-2. Installer PHP >= 8.2 et Composer (Sur votre machine utiliser XAMPP pour windows, MAMP pour mac ou LAMP pour linux bien prendre la version PHP 8.2)
-3. Installer les dépendances du projet avec la commande `composer install`
-4. Faire un virtual host sur votre serveur local (XAMPP par exemple pour Windows) 
- - Ouvrir le fichier `httpd-vhosts.conf` dans le répertoire `C:\xampp\apache\conf\extra`
-    - Ajouter le code suivant à la fin du fichier
-    ```
-    <VirtualHost *>
-        DocumentRoot "C:\Users\votre_username\Documents\iut\symfony_base\public"
-        ServerName symfony_base.local
-        
-        <Directory "C:\Users\votre_username\Documents\iut\symfony_base\public">
-            AllowOverride All
-            Require all granted
-        </Directory>
-    </VirtualHost>
-    ```
-    - Ajouter l'adresse IP de votre machine dans le fichier `C:\Windows\System32\drivers\etc\hosts`
-    ```
-    127.0.0.1 symfony_base.local
-    ```
-    - Redémarrer Apache
-    - Accéder à l'adresse `symfony_base.local` dans votre navigateur
+### 5. Compiler le CSS Tailwind
 
-4. Créer un fichier `.env.local` à la racine du projet et ajouter la configuration de la base de données
-5. Créer la base de données avec la commande `php bin/console doctrine:database:create`
+```bash
+php bin/console tailwind:init
+php bin/console tailwind:build
+```
 
-## Utilisation
+### 6. Démarrer le serveur Symfony
 
-- N'hésitez pas à consulter la documentation de Symfony pour plus d'informations sur l'utilisation du framework : https://symfony.com/doc/current/index.html
+```bash
+symfony local:server:start
+```
 
-- Notez comment fonctionne votre projet dans le fichier README.md et mettez à jour ce fichier au fur et à mesure de l'avancement de votre projet pour aider les autres développeurs à comprendre comment fonctionne votre projet.
+## Fonctionnalités
+
+- Animation de goat dans la page d'accueil en cliquant sur les fleches
+- Création et connexion d'un compte
+- Gestion des produits (créer, lire, mettre à jour, supprimer)
+- Gestion des clients (créer, lire, mettre à jour, supprimer)
+- Rôles utilisateurs (Admin, Manager, User)
+- Exportation des produits en CSV
+- Dark mode
+
+## Rôles utilisateurs
+
+- **Admin**: Accès à toutes les fonctionnalités
+- **Manager**: Peut gérer les clients et les produits
+- **User**: Peut voir les produits
+
+## Exécuter les tests
+
+```bash
+./vendor/bin/phpunit
+```
+
+## Commandes de la console
+
+Créer un nouveau client:
+
+```bash
+php bin/console app:create-client
+```
+
+Importer des produits depuis un fichier CSV:
+
+```bash
+php bin/console app:import-products path/to/file.csv
+```
