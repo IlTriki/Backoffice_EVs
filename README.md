@@ -76,3 +76,7 @@ Importer des produits depuis un fichier CSV:
 ```bash
 php bin/console app:import-products path/to/file.csv
 ```
+
+## Video demo
+https://github.com/user-attachments/assets/d3f37739-34d2-4949-85ca-dcfce2b8bda0
+
